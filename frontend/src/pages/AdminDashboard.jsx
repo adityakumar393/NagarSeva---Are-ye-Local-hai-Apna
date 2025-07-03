@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+
 
 function AdminDashboard() {
   const [complaints, setComplaints] = useState([]);
@@ -16,25 +18,24 @@ function AdminDashboard() {
         setError("Unauthorized or server error.");
       });
   }, []);
+const updateStatus = async (id, newStatus) => {
+  try {
+    await axios.patch(
+      `http://localhost:5000/api/complaints/${id}/status`,
+      { status: newStatus },
+      { withCredentials: true }
+    );
+    setComplaints((prev) =>
+      prev.map((c) =>
+        c._id === id ? { ...c, status: newStatus } : c
+      )
+    );
+    toast.success("✅ Status updated");
+  } catch (err) {
+    toast.error("❌ Failed to update status");
+  }
+};
 
-  const updateStatus = async (id, newStatus) => {
-    try {
-      await axios.patch(
-        `http://localhost:5000/api/complaints/${id}/status`,
-        { status: newStatus },
-        { withCredentials: true }
-      );
-
-      setComplaints((prev) =>
-        prev.map((c) =>
-          c._id === id ? { ...c, status: newStatus } : c
-        )
-      );
-    } catch (err) {
-      console.error(err);
-      alert("❌ Failed to update status");
-    }
-  };
 
   return (
     <div className="max-w-5xl mx-auto mt-10 p-6">

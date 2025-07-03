@@ -1,26 +1,23 @@
 import { signInWithGoogle } from "../firebase";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 function Login() {
   const handleLogin = async () => {
-    try {
-      const result = await signInWithGoogle();
-      const token = await result.user.getIdToken();
+   try {
+  const tokenId = await user.getIdToken();
+  await axios.post("http://localhost:5000/api/auth/google-login", { tokenId }, {
+    withCredentials: true,
+  });
 
-      await axios.post(
-        "http://localhost:5000/api/auth/google-login",
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
-        }
-      );
+  toast.success("✅ Logged in successfully!");
+  navigate("/submit-complaint");
+} catch (error) {
+  toast.error("❌ Login failed");
+}
 
-      alert("Logged in successfully!");
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   return (

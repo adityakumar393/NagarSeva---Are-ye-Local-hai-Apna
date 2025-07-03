@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+
 
 function ComplaintForm() {
   const [formData, setFormData] = useState({
@@ -28,16 +30,19 @@ function ComplaintForm() {
     Object.entries(formData).forEach(([key, val]) => data.append(key, val));
     images.forEach((img) => data.append("images", img));
 
-    try {
-      const res = await axios.post("http://localhost:5000/api/complaints/submit", data, {
-        withCredentials: true,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setMessage("✅ Complaint submitted successfully!");
-    } catch (err) {
-      setMessage("❌ Failed to submit complaint.");
-      console.error(err);
-    }
+   try {
+  const res = await axios.post("http://localhost:5000/api/complaints/submit", data, {
+    withCredentials: true,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  toast.success("✅ Complaint submitted successfully!");
+  setFormData({ title: "", description: "", category: "", subcategory: "", state: "" });
+  setImages([]);
+  } 
+catch (err) {
+  toast.error("❌ Failed to submit complaint.");
+}
+
   };
 
   return (
