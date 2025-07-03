@@ -6,6 +6,7 @@ import AdminLogin from "./components/AdminLogin";
 import CitizenDashboard from "./pages/CitizenDashboard";
 import SubmitComplaint from "./pages/SubmitComplaint";
 import MyComplaints from "./pages/MyComplaints";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<CitizenDashboard />} />
         <Route path="/submit-complaint" element={<SubmitComplaint />} />
         <Route path="/my-complaints" element={<MyComplaints />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </>
   );
